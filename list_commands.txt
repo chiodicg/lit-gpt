@@ -8,10 +8,10 @@ python scripts/convert_hf_checkpoint.py --checkpoint_dir checkpoints/mistralai/M
 Prepare Dataset based on this: https://github.com/Lightning-AI/lit-gpt/blob/main/tutorials/finetune_lora.md#tune-on-your-dataset
     - Add whole dataset to data/user_stories.json
     - Make a copy of prepare_alpaca.py and rename it to prepare_user_stories.py
-    - Change the generate_prompt, destination_path
+    - Change the generate_prompt, destination_path, data_file_name, data_file_url
 
 
-python scripts/prepare_user_stories.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2 --destination_path data/user_stories.json
+python scripts/prepare_user_stories.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
 
 Lora
 python finetune/lora.py  --data_dir data/  --out_dir out/fine-tuned-Mistral-7B-Instruct-v0.2 --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
