@@ -25,3 +25,9 @@ python finetune/lora.py --data_dir data/user_stories --out_dir out/fine-tuned-Mi
 
 QLora
 python finetune/lora.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2 --precision bf16-true --quantize bnb.nf4
+
+Merge weights
+python scripts/merge_lora.py \
+  --checkpoint_dir "checkpoints/mistralai/Mistral-7B-Instruct-v0.2" \
+  --lora_path "out/fine-tuned-Mistral-7B-Instruct-v0.2/lit_model_lora_finetuned.pth" \
+  --out_dir "out/lora_merged/stablelm-base-alpha-3b/"

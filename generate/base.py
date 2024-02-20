@@ -95,10 +95,10 @@ def generate(
 
 @torch.inference_mode()
 def main(
-    prompt: str = "What food do llamas eat?",
+    prompt: str = "Given a user story describing application functionality, you will generate detailed, reasonable, and numbered plain English test cases. As a user, I want to be able to comment on posts, so that I can engage in discussions with my friends and community",
     *,
     num_samples: int = 1,
-    max_new_tokens: int = 50,
+    max_new_tokens: int = 1000,
     top_k: Optional[int] = 200,
     temperature: float = 0.8,
     checkpoint_dir: Path = Path("checkpoints/stabilityai/stablelm-base-alpha-3b"),
