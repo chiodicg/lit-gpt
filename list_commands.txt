@@ -16,7 +16,7 @@ python scripts/prepare_user_stories.py --checkpoint_dir checkpoints/mistralai/Mi
 Modify lora.py
 Instruct (line 245): As a user, I want to be able to filter search results by price range on the e-commerce platform, so that I can find products within my budget.
 from scripts.prepare_user_stories import generate_prompt (line 30)
-model.max_seq_length = min(1000 or float("inf")) (line 176)
+model.max_seq_length = 1000 (line 176)
 
 
 Lora
