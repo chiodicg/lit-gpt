@@ -1,0 +1,20 @@
+git clone https://github.com/chiodicg/lit-gpt.git
+cd lit-gpt
+pip install -r requirements-all.txt
+python scripts/download.py --repo_id mistralai/Mistral-7B-Instruct-v0.2
+python scripts/convert_hf_checkpoint.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
+
+
+Prepare Dataset based on this: https://github.com/Lightning-AI/lit-gpt/blob/main/tutorials/finetune_lora.md#tune-on-your-dataset
+    - Add whole dataset to data/user_stories.json
+    - Make a copy of prepare_alpaca.py and rename it to prepare_user_stories.py
+    - Change the generate_prompt, destination_path
+
+
+python scripts/prepare_user_stories.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2 --destination_path data/user_stories.json
+
+Lora
+python finetune/lora.py  --data_dir data/  --out_dir out/fine-tuned-Mistral-7B-Instruct-v0.2 --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
+
+QLora
+python finetune/lora.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2 --precision bf16-true --quantize bnb.nf4
