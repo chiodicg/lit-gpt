@@ -26,7 +26,7 @@ def prepare(
     seed: int = 42,
     mask_inputs: bool = False,  # as in alpaca-lora
     data_file_name: str = "alpaca_data_cleaned_archive.json",
-    data_file_url: str = "https://raw.githubusercontent.com/chiodicg/lit-gpt/main/data/user_stories.json",
+    data_file_url: str = "https://raw.githubusercontent.com/tloen/alpaca-lora/main/alpaca_data_cleaned_archive.json",
     ignore_index: int = -1,
     max_seq_length: Optional[int] = None,
 ) -> None:
