@@ -27,7 +27,7 @@ from lit_gpt.utils import (
     load_checkpoint,
     num_parameters,
 )
-from scripts.prepare_alpaca import generate_prompt
+from scripts.prepare_user_stories import generate_prompt
 
 eval_interval = 100
 save_interval = 100
