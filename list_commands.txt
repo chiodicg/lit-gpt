@@ -13,12 +13,11 @@ Prepare Dataset based on this: https://github.com/Lightning-AI/lit-gpt/blob/main
 
 python scripts/prepare_user_stories.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
 
-Modify lora.py
-Instruct (line 245): As a user, I want to be able to filter search results by price range on the e-commerce platform, so that I can find products within my budget.
-from scripts.prepare_user_stories import generate_prompt (line 30)
-model.max_seq_length = 1000 (line 176)
-max_iters = 5409 (46)
-
+Modify lora.py:
+- Instruct (line 245): As a user, I want to be able to filter search results by price range on the e-commerce platform, so that I can find products within my budget.
+- from scripts.prepare_user_stories import generate_prompt (line 30)
+- model.max_seq_length = 1000 (line 176)
+- max_iters = 5409 (line 46: size of the train dataset)
 
 Lora
 python finetune/lora.py --data_dir data/user_stories --out_dir out/fine-tuned-Mistral-7B-Instruct-v0.2 --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2
@@ -27,7 +26,19 @@ QLora
 python finetune/lora.py --checkpoint_dir checkpoints/mistralai/Mistral-7B-Instruct-v0.2 --precision bf16-true --quantize bnb.nf4
 
 Merge weights
-python scripts/merge_lora.py \
-  --checkpoint_dir "checkpoints/mistralai/Mistral-7B-Instruct-v0.2" \
-  --lora_path "out/fine-tuned-Mistral-7B-Instruct-v0.2/lit_model_lora_finetuned.pth" \
-  --out_dir "out/lora_merged/stablelm-base-alpha-3b/"
+python scripts/merge_lora.py --checkpoint_dir "checkpoints/mistralai/Mistral-7B-Instruct-v0.2" --lora_path "out/fine-tuned-Mistral-7B-Instruct-v0.2/lit_model_lora_finetuned.pth" --out_dir "out/lora_merged/mistral-7B-finetunned/"
+
+Copy documents from mistral
+cp checkpoints/mistralai/Mistral-7B-Instruct-v0.2/*.json ../../../out/lora_merged/mistral-7B-finetunned/
+cp checkpoints/mistralai/Mistral-7B-Instruct-v0.2/tokenizer.model ../../../out/lora_merged/mistral-7B-finetunned/
+
+Edit egenerate/base.py:
+ - Line 98: prompt: str = "Given a user story describing application functionality, you will generate detailed, reasonable, and numbered plain English test cases. As a user, I want to be able to comment on posts, so that I can engage in discussions with my friends and community"
+
+python generate/base.py --checkpoint_dir "out/lora_merged/mistral-7B-finetunned/"
+
+Install the eval_llm
+pip install https://github.com/EleutherAI/lm-evaluation-harness/archive/refs/heads/main.zip -U
+pip install https://github.com/EleutherAI/lm-evaluation-harness/archive/refs/heads/master.zip -U
+
+python eval/lm_eval_harness.py --checkpoint_dir "out/lora_merged/mistral-7B-finetunned/" --save_filepath "eval_results.json"
